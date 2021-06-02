@@ -9,12 +9,10 @@ const customers = require('./routes/customers')
 // DataBase Integeration
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true ,useFindAndModify:false})
     .then(()=>{
-        // debuglogger.info('DB is Connected')
-        console.log('DB is connected')
+        debuglogger.info('DB is Connected')
     })
     .catch(err=>{
-        // debuglogger.error('error is ....', err)
-        console.log('DB is NOT connected')
+        debuglogger.error('error is ....', err)
     })
 
 app.use(express.json())
@@ -30,9 +28,9 @@ app.get('/',(req,res)=>{
 })
 const port = process.env.PORT||3000;
 app.listen(port,()=>{
-    // debuglogger.info(`***********NEW SESSION*************`)
-    console.log("*****************NEW SESSION****************")
-    // debuglogger.info(`App is Listening at ${port}`)
-    console.log(`App is listening at ${port}`)
+    debuglogger.info(`************************NEW SESSION*********************`)
+    debuglogger.info(`________________________________________________________`)
+    debuglogger.info(`App is Listening at ${port}`)
+    
 })
 
