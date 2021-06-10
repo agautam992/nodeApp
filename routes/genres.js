@@ -47,13 +47,13 @@ router.put('/:id',async (req,res)=>{
     //validate the genre parameters
     const {error} = validateGenre(req.body)
     if(error){
-
+        debuglogger.error(`error.details[0].message`)
         return res.status(400).send(error.details[0].message)
     }
     const genre = await genre_schema_class.findByIdAndUpdate(req.params.id,{name:req.body.name},{new:true})
     if(!genre){
-
-        return res.status(404).send(`Result NOT found for given ID = ${req.params.id}`)
+        debuglogger.error(`Genre not found for given ID = ${req.params.id}`)
+        return res.status(404).send(`Genre NOT found for given ID = ${req.params.id}`)
     }
     debuglogger.info(`Genre Updated Successfully`)
     res.send(genre);        
@@ -63,7 +63,7 @@ router.delete('/:id',async (req,res)=>{
 
     const genre = await genre_schema_class.findByIdAndDelete(req.params.id)
     if(!genre){
-
+        debuglogger.error(`Genre not found for given ID = ${req.params.id}`)
         return res.status(404).send(`Result NOT found for given ID = ${req.params.id}`)
     }
     debuglogger.info(`Genre Deleted Successfully`)

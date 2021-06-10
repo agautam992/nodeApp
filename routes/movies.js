@@ -60,7 +60,7 @@ router.put('/:id',async (req,res)=>{
     //validate the Movie parameters
     const {error} = validateMovie(req.body)
     if(error){
-
+        debuglogger.error(`error.details[0].message`)
         return res.status(400).send(error.details[0].message)
     }
     const genre = await genre_schema_class.findById(req.body.genreID)
@@ -79,7 +79,7 @@ router.put('/:id',async (req,res)=>{
     
     },{new:true})
     if(!movie){
-
+        debuglogger.error(`Movie NOT found for given ID = ${req.params.id}`)
         return res.status(404).send(`Movie NOT found for given ID = ${req.params.id}`)
     }
     debuglogger.info(`Movie Updated Successfully`)
@@ -90,8 +90,8 @@ router.delete('/:id',async (req,res)=>{
 
     const movie = await Movie_schema_class.findByIdAndDelete(req.params.id)
     if(!movie){
-
-        return res.status(404).send(`Result NOT found for given ID = ${req.params.id}`)
+        debuglogger.error(`Movie NOT found for given ID = ${req.params.id}`)
+        return res.status(404).send(`Movie NOT found for given ID = ${req.params.id}`)
     }
     debuglogger.info(`Movie Deleted Successfully`)
     return res.send(movie);

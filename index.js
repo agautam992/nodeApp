@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const genres = require('./routes/genres')
 const customers = require('./routes/customers')
 const movies = require('./routes/movies')
+const rentals = require('./routes/rentals')
 
 // DataBase Integeration
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true ,useFindAndModify:false})
@@ -20,6 +21,7 @@ app.use(express.json())
 app.use('/api/genre',genres)        //genre routes
 app.use('/api/customer',customers)  // customers routes
 app.use('/api/movie',movies)        //movies router
+app.use('/api/rental',rentals)      //rental Routes
 
 
 app.get('/',(req,res)=>{

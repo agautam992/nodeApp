@@ -6,6 +6,7 @@ const {customer_schema_class,validateCustomer} = require('../models/customer')
 
 router.get('/',async (req,res)=>{
     const customers=await customer_schema_class.find().sort('name')
+    debuglogger.info(`Get Route of Customer Loaded Successfully! `)
     res.send(customers);
     
 })
@@ -50,11 +51,13 @@ router.put('/:id',async (req,res)=>{
     const {error} = validateCustomer(req.body)
 
     if(error) {
+        debuglogger.error(`error.details[0].message`)
         return res.status(400).send(error.details[0].message)
     }
     
     const customer = await customer_schema_class.findByIdAndUpdate(req.params.id,{name:req.body.name},{new:true})
     if(!customer) {
+        debuglogger.error(`Result not found for given ID = ${req.params.id}`)
         return res.status(404).send(`Result not found for given ID = ${req.params.id}`)
     }
     debuglogger.info(`Customer Updated Successfully`)
@@ -67,6 +70,7 @@ router.delete('/:id',async (req,res)=>{
     const customer = await customer_schema_class.findByIdAndDelete(req.params.id)
         if(!customer) 
         {
+            debuglogger.error(`Result not found for given ID = ${req.params.id}`)
             return res.status(404).send(`Result not found for given ID = ${req.params.id}`)
         }
         debuglogger.info(`Customer Deleted Successfully`)
