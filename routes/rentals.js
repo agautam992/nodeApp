@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const { error } = validateRental(req.body)
   if (error) {
-        debuglogger.error(`error.details[0].message`)
+        debuglogger.error(error.details[0].message)
         return res.status(400).send(error.details[0].message)
   }
   const customer = await customer_schema_class.findById(req.body.customerId)

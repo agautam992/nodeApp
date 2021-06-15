@@ -28,13 +28,13 @@ router.post('/',async (req,res)=>{
     const {error} = validateGenre(req.body)
     if(error) {
 
-        debuglogger.error(`error.details[0].message`)
+        debuglogger.error(error.details[0].message)
         return res.status(400).send(error.details[0].message)
     }
-    let genre = new genre_schema_class({                      //creating new object 
+    const genre = new genre_schema_class({                      //creating new object 
         name: req.body.name            
     })
-    genre = await genre.save()     
+    await genre.save()     
     if(!genre){
         debuglogger.error(`New Genre DID NOT save Successfully`)
     } 
@@ -47,7 +47,7 @@ router.put('/:id',async (req,res)=>{
     //validate the genre parameters
     const {error} = validateGenre(req.body)
     if(error){
-        debuglogger.error(`error.details[0].message`)
+        debuglogger.error(error.details[0].message)
         return res.status(400).send(error.details[0].message)
     }
     const genre = await genre_schema_class.findByIdAndUpdate(req.params.id,{name:req.body.name},{new:true})

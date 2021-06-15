@@ -38,7 +38,7 @@ router.post('/',async (req,res)=>{
         return res.status(400).send('Invalid Genre' )
     }
 
-    let movie = new Movie_schema_class({                      //creating new object 
+    const movie = new Movie_schema_class({                      //creating new object 
         title: req.body.title,
         numberInStock:req.body.numberInStock,
         dailyRental:req.body.dailyRental,
@@ -47,7 +47,7 @@ router.post('/',async (req,res)=>{
             name:genre.name
         }            
     })
-    movie = await movie.save()     
+    await movie.save()     
     if(!movie){
         debuglogger.error(`New movie DID NOT save Successfully`)
     } 
@@ -60,7 +60,7 @@ router.put('/:id',async (req,res)=>{
     //validate the Movie parameters
     const {error} = validateMovie(req.body)
     if(error){
-        debuglogger.error(`error.details[0].message`)
+        debuglogger.error(error.details[0].message)
         return res.status(400).send(error.details[0].message)
     }
     const genre = await genre_schema_class.findById(req.body.genreID)

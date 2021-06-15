@@ -7,9 +7,12 @@ const genres = require('./routes/genres')
 const customers = require('./routes/customers')
 const movies = require('./routes/movies')
 const rentals = require('./routes/rentals')
+const users = require('./routes/users')
+const Joi = require('joi')
+Joi.objectId = require('joi-objectid')(Joi) 
 
 // DataBase Integeration
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true ,useFindAndModify:false})
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true ,useFindAndModify:false, useCreateIndex: true})
     .then(()=>{
         debuglogger.info('DB is Connected')
     })
@@ -21,7 +24,8 @@ app.use(express.json())
 app.use('/api/genre',genres)        //genre routes
 app.use('/api/customer',customers)  // customers routes
 app.use('/api/movie',movies)        //movies router
-app.use('/api/rental',rentals)      //rental Routes
+app.use('/api/rental',rentals)      //rental routes
+app.use('/api/user',users)          //users routes
 
 
 app.get('/',(req,res)=>{

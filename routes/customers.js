@@ -28,15 +28,15 @@ router.post('/',async (req,res)=>{
     const {error} = validateCustomer(req.body)
     if(error){
 
-        debuglogger.error(`error.details[0].message`)
+        debuglogger.error(error.details[0].message)
         return res.status(400).send(error.details[0].message)
     }
-    let customer = new customer_schema_class({                      
+    const customer = new customer_schema_class({                      
         name: req.body.name,
         isGold:req.body.isGold,
         phone:req.body.phone             
     })
-    customer = await customer.save()
+    await customer.save()
     if(!customer){
         debuglogger.error(`New Customer DID NOT save Successfully`)
     }
@@ -51,7 +51,7 @@ router.put('/:id',async (req,res)=>{
     const {error} = validateCustomer(req.body)
 
     if(error) {
-        debuglogger.error(`error.details[0].message`)
+        debuglogger.error(error.details[0].message)
         return res.status(400).send(error.details[0].message)
     }
     
