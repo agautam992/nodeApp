@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const debuglogger = require('../debugLogs/debugLog')        //for logging
 const {customer_schema_class,validateCustomer} = require('../models/customer')
+const _ = require('lodash')
 
 
 router.get('/',async (req,res)=>{
@@ -31,11 +32,7 @@ router.post('/',async (req,res)=>{
         debuglogger.error(error.details[0].message)
         return res.status(400).send(error.details[0].message)
     }
-    const customer = new customer_schema_class({                      
-        name: req.body.name,
-        isGold:req.body.isGold,
-        phone:req.body.phone             
-    })
+    const customer = new customer_schema_class(_.pick(req.body,['name','isGold','phone']))
     await customer.save()
     if(!customer){
         debuglogger.error(`New Customer DID NOT save Successfully`)

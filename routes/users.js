@@ -1,12 +1,16 @@
+const auth = require('../middleware/auth')
 const express = require('express')
 const router = express.Router()
 const debuglogger = require('../debugLogs/debugLog')        //for logging
 const {user_class,validateUser} = require('../models/user')
+const _ = require('lodash')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const config = require('config')
 
-
-router.get('/',async (req,res)=>{
-    const result=await user_class.find().sort('genre')
-    debuglogger.info(`Get Route of Users Loaded Successfully! `)
+router.get('/me',auth,async (req,res)=>{
+    const result=await user_class.findById(req.user._id).select('-password')
+    debuglogger.info(`Get Route of Current User Loaded Successfully! `)
     res.send(result);
     
 })
@@ -24,17 +28,18 @@ router.post('/',async (req,res)=>{
         debuglogger.error('User is Already Registered')
         return res.status(400).send('User is Already Registered')
     }
-    user = new user_class({                      
-        name: req.body.name,
-        email:req.body.email,
-        password:req.body.password             
-    })
+    user = new user_class(_.pick(req.body,['name','email','password']))
+    const salt = await bcrypt.genSalt(10)
+    user.password = await bcrypt.hash(user.password,salt)
     await user.save()
     if(!user){
         debuglogger.error(`New user DID NOT save Successfully`)
     }
     debuglogger.info(`New user saved Successfully`)
-    res.send(user)                    
+
+    const token = user.generateAuthToken();
+
+    res.header('x-auth-token',token).send(_.pick(user,['_id','name','email']))                    
 })
 
 module.exports = router

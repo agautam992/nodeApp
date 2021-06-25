@@ -1,3 +1,4 @@
+const auth = require('../middleware/auth')
 const {genre_schema_class,validateGenre}=require('../models/genre')
 const express = require('express')
 const router = express.Router()
@@ -23,7 +24,7 @@ router.get('/:id',async (req,res)=>{
 })
 
 
-router.post('/',async (req,res)=>{
+router.post('/',auth,async (req,res)=>{
 
     const {error} = validateGenre(req.body)
     if(error) {
@@ -42,7 +43,7 @@ router.post('/',async (req,res)=>{
     res.send(genre)                   
 })
 
-router.put('/:id',async (req,res)=>{
+router.put('/:id',auth,async (req,res)=>{
 
     //validate the genre parameters
     const {error} = validateGenre(req.body)
@@ -59,7 +60,7 @@ router.put('/:id',async (req,res)=>{
     res.send(genre);        
 })
 
-router.delete('/:id',async (req,res)=>{
+router.delete('/:id',auth,async (req,res)=>{
 
     const genre = await genre_schema_class.findByIdAndDelete(req.params.id)
     if(!genre){
