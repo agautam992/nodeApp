@@ -19,8 +19,8 @@ router.post('/',async (req,res)=>{
     const {error} = validate(req.body)
     if(error){
 
-        debuglogger.error(error.details[0].message)
-        return res.status(400).send(error.details[0].message)
+        debuglogger.error(`Error in Validation:- ${error.details[0].message}`)
+        return res.status(400).send(`Error in Validation:- ${error.details[0].message}`)
     }
     let user = await user_class.findOne({email:req.body.email})
     if(!user){

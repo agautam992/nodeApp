@@ -9,8 +9,8 @@ function auth(req,res,next){
         return res.status(401).send('Access Denied. No token Provided')
     }
     try{
-        const decoded = jwt.verify(token,config.get('jwtPrivateKey'))
-        req.user = decoded
+        const decoded = jwt.verify(token,config.get('jwtPrivateKey'))       //return decoded payload
+        req.user = decoded              //will be used in protected APIs
         next()
     }
     catch(ex){
