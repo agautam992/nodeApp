@@ -5,15 +5,16 @@ const express = require('express')
 const router = express.Router()
 const debuglogger = require('../debugLogs/debugLog')
 
-router.get('/',async (req,res)=>{
+
+router.get('/',async (req,res,next)=>{
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const result=await genre_schema_class.find().sort('genre')
     debuglogger.info(`Get Route of Genre Loaded Successfully! `)
-    res.send(result);
-    
+    res.send(result)
 })
 
 router.get('/:id',async (req,res)=>{
-
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const genre = await genre_schema_class.findById(req.params.id)
     if(!genre){
 
@@ -25,8 +26,8 @@ router.get('/:id',async (req,res)=>{
 })
 
 
-router.post('/',[auth,admin],async (req,res)=>{
-
+router.post('/',auth,async (req,res)=>{
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const {error} = validateGenre(req.body)
     if(error) {
 
@@ -45,7 +46,7 @@ router.post('/',[auth,admin],async (req,res)=>{
 })
 
 router.put('/:id',auth,async (req,res)=>{
-
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     //validate the genre parameters
     const {error} = validateGenre(req.body)
     if(error){
@@ -62,7 +63,7 @@ router.put('/:id',auth,async (req,res)=>{
 })
 
 router.delete('/:id',[auth,admin],async (req,res)=>{
-
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const genre = await genre_schema_class.findByIdAndDelete(req.params.id)
     if(!genre){
         debuglogger.error(`Genre not found for given ID = ${req.params.id}`)

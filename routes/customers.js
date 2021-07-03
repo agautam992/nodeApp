@@ -6,6 +6,7 @@ const _ = require('lodash')
 
 
 router.get('/',async (req,res)=>{
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const customers=await customer_schema_class.find().sort('name')
     debuglogger.info(`Get Route of Customer Loaded Successfully! `)
     res.send(customers);
@@ -13,7 +14,7 @@ router.get('/',async (req,res)=>{
 })
 
 router.get('/:id',async (req,res)=>{
-
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const customer = await customer_schema_class.findById(req.params.id)
     if(!customer)
     {
@@ -25,7 +26,7 @@ router.get('/:id',async (req,res)=>{
 })
 
 router.post('/',async (req,res)=>{
-
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const {error} = validateCustomer(req.body)
     if(error){
 
@@ -43,7 +44,7 @@ router.post('/',async (req,res)=>{
 
 
 router.put('/:id',async (req,res)=>{
-
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     //validate the customer parameters
     const {error} = validateCustomer(req.body)
 
@@ -63,7 +64,7 @@ router.put('/:id',async (req,res)=>{
 
 
 router.delete('/:id',async (req,res)=>{
-    
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const customer = await customer_schema_class.findByIdAndDelete(req.params.id)
         if(!customer) 
         {

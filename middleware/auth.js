@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const config = require('config')
 
 function auth(req,res,next){
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const token = req.header('x-auth-token')
     if(!token){
         debuglogger.warn('Access Denied. No token Provided')

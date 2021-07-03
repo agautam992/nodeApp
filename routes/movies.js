@@ -5,6 +5,7 @@ const router = express.Router()
 const debuglogger = require('../debugLogs/debugLog')
 
 router.get('/',async (req,res)=>{
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const result=await Movie_schema_class.find().sort('title')
     debuglogger.info(`Get Route of Movie Loaded Successfully! `)
     res.send(result);
@@ -12,7 +13,7 @@ router.get('/',async (req,res)=>{
 })
 
 router.get('/:id',async (req,res)=>{
-
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const movie = await Movie_schema_class.findById(req.params.id)
     if(!movie){
 
@@ -25,7 +26,7 @@ router.get('/:id',async (req,res)=>{
 
 
 router.post('/',async (req,res)=>{
-
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const {error} = validateMovie(req.body)
     if(error) {
 
@@ -57,7 +58,7 @@ router.post('/',async (req,res)=>{
 
 router.put('/:id',async (req,res)=>{
 
-    //validate the Movie parameters
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const {error} = validateMovie(req.body)
     if(error){
         debuglogger.error(error.details[0].message)
@@ -87,7 +88,7 @@ router.put('/:id',async (req,res)=>{
 })
 
 router.delete('/:id',async (req,res)=>{
-
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const movie = await Movie_schema_class.findByIdAndDelete(req.params.id)
     if(!movie){
         debuglogger.error(`Movie NOT found for given ID = ${req.params.id}`)

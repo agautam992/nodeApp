@@ -8,6 +8,7 @@ const Joi = require('joi');
 
 
 router.get('/',async (req,res)=>{
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const result=await user_class.find().sort('genre')
     debuglogger.info(`Get Route of Users Loaded Successfully! `)
     res.send(result);
@@ -15,7 +16,7 @@ router.get('/',async (req,res)=>{
 })
 
 router.post('/',async (req,res)=>{
-
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const {error} = validate(req.body)
     if(error){
 

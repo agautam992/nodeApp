@@ -1,3 +1,4 @@
+require('express-async-errors')
 const debuglogger = require('./debugLogs/debugLog')
 const express = require('express');
 const app = express();
@@ -13,7 +14,7 @@ const Joi = require('joi')
 Joi.objectId = require('joi-objectid')(Joi) 
 const bcrypt = require('bcrypt')
 const config = require('config')
-
+// const error = require('./middleware/error')
 
 if(!config.get('jwtPrivateKey')){                   //export nodeapp_jwtPrivateKey = "yourKeyString"
     debuglogger.error('FATAL Error. Environment Variable is not set')
@@ -36,7 +37,7 @@ app.use('/api/movie',movies)        //movies router
 app.use('/api/rental',rentals)      //rental routes
 app.use('/api/user',users)          //users routes
 app.use('/api/auth',auths)          //authentication
-
+// app.use(error)
 
 app.get('/',(req,res)=>{
     

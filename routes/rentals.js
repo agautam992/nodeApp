@@ -10,12 +10,14 @@ const Fawn = require('fawn')      //for adding 2 instances in DB collectively
 Fawn.init(mongoose)
 
 router.get('/', async (req, res) => {
+  debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
   const result = await rental_class.find().sort('-dateOut')
   debuglogger.info(`Get Route of Rentals Loaded Successfully! `)
   res.send(result);
 })
 
 router.post('/', async (req, res) => {
+  debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
   const { error } = validateRental(req.body)
   if (error) {
         debuglogger.error(`Error in Validation:- ${error.details[0].message}`)
@@ -68,6 +70,7 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+  debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
   const rental = await rental_class.findById(req.params.id);
 
   if (!rental) {

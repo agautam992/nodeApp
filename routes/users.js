@@ -9,14 +9,16 @@ const jwt = require('jsonwebtoken')
 const config = require('config')
 
 router.get('/me',auth,async (req,res)=>{
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const result=await user_class.findById(req.user._id).select('-password')
+    res.send(_.pick(result,['_id','name','email','isAdmin']));
     debuglogger.info(`Get Route of Current User Loaded Successfully! `)
-    res.send(result);
+    return 
     
 })
 
 router.post('/',async (req,res)=>{
-
+    debuglogger.info(`Routing Path-- ${req.headers.host}${req.baseUrl}${req.url}\tRouting Type-- ${req.route.stack[0].method}`)
     const {error} = validateUser(req.body)
     if(error){
 
@@ -35,10 +37,12 @@ router.post('/',async (req,res)=>{
     if(!user){
         debuglogger.error(`New user DID NOT save Successfully`)
     }
-    debuglogger.info(`New user saved Successfully`)
+    
     const token = user.generateAuthToken();
 
-    res.header('x-auth-token',token).send(_.pick(user,['_id','name','email']))                    
+    res.header('x-auth-token',token).send(_.pick(user,['_id','name','email','isAdmin']))  
+    debuglogger.info(`New user saved Successfully`)
+    return                   
 })
 
 module.exports = router
