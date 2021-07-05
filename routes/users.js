@@ -29,6 +29,7 @@ router.post('/',async (req,res)=>{
     if(user){
         debuglogger.error('User is Already Registered')
         return res.status(400).send('User is Already Registered')
+        
     }
     user = new user_class(_.pick(req.body,['name','email','password','isAdmin']))
     const salt = await bcrypt.genSalt(10)
